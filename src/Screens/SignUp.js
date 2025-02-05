@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { registerUser } from '../httpRequests';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,10 +10,12 @@ const SignUp = () => {
   const [success, setSuccess] = useState("");
   const navigate = useNavigate();
 
-  const userDetails = localStorage.getItem("userDetails") ? JSON.parse(localStorage.getItem("userDetails")) : null;
-  if (userDetails && userDetails.userId && userDetails.token) {
-    navigate('/home');
-  }
+  useEffect(() => {
+    const userDetails = localStorage.getItem("userDetails") ? JSON.parse(localStorage.getItem("userDetails")) : null
+    if (userDetails && (userDetails.userId && userDetails.token)) {
+      navigate('/home');
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     try {

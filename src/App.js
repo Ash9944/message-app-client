@@ -20,17 +20,19 @@ const App = () => {
   useEffect(() => {
     window.addEventListener('resize', handleResize);
     handleResize();
+
     return () => {
       return window.removeEventListener('resize', handleResize);
     };
   }, []);
+  
   return (
     <div className="App">
-      <Header />
-      <div className="section" id="section" style={{ 'minHeight': screenHeight }} >
-        {<RouterConfig />}
-      </div>
-      <Footer />
+        <Header />
+        <div className="section" id="section" style={{ 'minHeight': screenHeight }} >
+          {<RouterConfig />}
+        </div>
+        <Footer />
     </div>
   )
 }

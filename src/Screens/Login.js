@@ -1,19 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../httpRequests'
 import socket from '../socketOperations.js';
+import { AppContext } from "../Common/AppContext.js";
 
 const Login = () => {
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const { setUser } = useContext(AppContext);
   const navigate = useNavigate();
 
-  const userDetails = localStorage.getItem("userDetails") ? JSON.parse(localStorage.getItem("userDetails")) : null;
-  if (userDetails && userDetails.userId && userDetails.token) {
-    navigate('/home');
-  }
+  useEffect(() => {
+    const userDetails = localStorage.getItem("userDetails") ? JSON.parse(localStorage.getItem("userDetails")) : null
+    if (userDetails && (userDetails.userId && userDetails.token)) {
+      navigate('/home');
+    }
+  }, []);
+
 
   const handleSubmit = async (e) => {
     try {
@@ -34,8 +39,10 @@ const Login = () => {
       }
 
       localStorage.setItem("userDetails", JSON.stringify(userData));
+      setUser(userData);
       socket.auth = userData;
       socket.connect();
+      socket.emit('joinGroup', { userId: userId });
 
       navigate("/home");
     } catch (error) {
@@ -85,6 +92,8 @@ const Login = () => {
               </button>
 
             </form>
+            {/* <FormIndex label={'User ID'} placeholder={"Enter your user ID"} type={'text'} value={userId} onChange={(e) => { handleValueChange(e) }} />
+            <FormIndex label={'Password'} placeholder={"Enter your password"} type={'password'} value={"password"} onChange={(e) => { handleValueChange(e) }} /> */}
           </div>
         </div>
       </div>

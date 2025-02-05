@@ -1,20 +1,25 @@
 html,
 body {
-    width: 100%;
-    background-color: var(--themeBg);
-    color: var(--textColor);
+  width: 100%;
+  background-color: var(--themeBg);
+  color: var(--textColor);
 }
 
 .section {
-    width: 100%;
-    min-height: 500px;
-    padding: 0px -60px;
+  width: 100%;
+  min-height: 500px;
+  padding: 0px -60px;
 }
+
 .chat-list {
-    overflow-y: auto;
-  }
-  
-  .chat-window {
-    overflow-y: auto;
-  }
-  
+  overflow-y: auto;
+}
+
+.chat-window {
+  height: 400px;
+  /* Adjust as needed */
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  /* Keeps the latest message at the bottom */
+}
