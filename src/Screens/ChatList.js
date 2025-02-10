@@ -24,9 +24,11 @@ const ChatList = ({ setActiveChat }) => {
 
   useEffect(() => {
     fetchUsersForChat();
+    const userDetails = localStorage.getItem("userDetails") ? JSON.parse(localStorage.getItem("userDetails")) : null;
 
-    socket.on("groupChanges", () => {
+    socket.on("groupChanges", (data) => {
       fetchUsersForChat();
+      socket.emit("joinGroup", { userId: userDetails.userId });
     });
 
     socket.on("oneToOneMessages", async () => {
@@ -77,7 +79,9 @@ const ChatList = ({ setActiveChat }) => {
       });
 
       fetchUsersForChat();
+
       socket.emit("groupChanges", { groupId: response.groupId });
+      socket.emit("joinGroup", { groupId: response.groupId });
       
     } catch (error) {
       alert(error.message);
