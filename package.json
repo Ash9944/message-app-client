@@ -7,7 +7,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.9",
-    "bootstrap": "^5.3.3",
+    "bootstrap": "4.5",
     "jquery": "^3.7.1",
     "message-app-client": "file:",
     "react-bootstrap": "^2.10.9",

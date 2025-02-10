@@ -1,25 +1,45 @@
-html,
-body {
-  width: 100%;
-  background-color: var(--themeBg);
-  color: var(--textColor);
+body{margin-top:20px;}
+
+.chat-online {
+    color: #34ce57
 }
 
-.section {
-  width: 100%;
-  min-height: 500px;
-  padding: 0px -60px;
+.chat-offline {
+    color: #e4606d
 }
 
-.chat-list {
-  overflow-y: auto;
+.chat-messages {
+    display: flex;
+    flex-direction: column;
+    max-height: 800px;
+    overflow-y: scroll
 }
 
-.chat-window {
-  height: 400px;
-  /* Adjust as needed */
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  /* Keeps the latest message at the bottom */
+.chat-message-left,
+.chat-message-right {
+    display: flex;
+    flex-shrink: 0
+}
+
+.chat-message-left {
+    margin-right: auto
+}
+
+.chat-message-right {
+    flex-direction: row-reverse;
+    margin-left: auto
+}
+.py-3 {
+    padding-top: 1rem!important;
+    padding-bottom: 1rem!important;
+}
+.px-4 {
+    padding-right: 1.5rem!important;
+    padding-left: 1.5rem!important;
+}
+.flex-grow-0 {
+    flex-grow: 0!important;
+}
+.border-top {
+    border-top: 1px solid #dee2e6!important;
 }

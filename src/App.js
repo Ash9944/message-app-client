@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Header from "./Common/Header";
 import Footer from "./Common/Footer";
 import RouterConfig from "./Routes";
+import './styles.css';
 
 const App = () => {
   const [screenHeight, setScreenHeight] = useState(null);

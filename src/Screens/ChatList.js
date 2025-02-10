@@ -85,86 +85,29 @@ const ChatList = ({ setActiveChat }) => {
   }
 
   return (
-    <div className="list-group chat-list">
-      <button className="list-group-item list-group-item-action p-4" onClick={async () => await openModal()}>
-        <strong>Add Member to Chat</strong>
-      </button>
+    <div class="col-12 col-lg-5 col-xl-3 border-right">
 
-      <button className="list-group-item list-group-item-action p-4" onClick={async () => await openGroupModal()}>
-        <strong>Add Group</strong>
-      </button>
+					<div class="px-4 d-none d-md-block">
+						<div class="d-flex align-items-center">
+							<div class="flex-grow-1">
+								<input type="text" class="form-control my-3" placeholder="Search..." />
+							</div>
+						</div>
+					</div>
 
-      {chats.map((chat) => (
-        <button
-          key={chat.id}
-          className="list-group-item list-group-item-action"
-          onClick={() => setActiveChat(chat)}
-        >
-          <strong>{chat.userId}</strong>
-          <p className="small text-muted">{chat.lastMessage}</p>
-        </button>
-      ))}
-
-      <Modal show={showModal} onHide={handleCloseModal} backdrop="static" keyboard={false} >
-        <Modal.Header closeButton>
-          <Modal.Title>Members to chat</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <ListGroup>
-            {friends.map((person) => (
-              <ListGroup.Item key={person.id} className="d-flex justify-content-between align-items-center">
-                <span>{person.userId}</span>
-
-                <Button
-                  variant="primary"
-                  size="sm"
-                  onClick={() => handleSelectPerson(person)}
-                >
-                  Chat
-                </Button>
-
-              </ListGroup.Item>
-            ))}
-          </ListGroup>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
-      <Modal show={showGroupModal} onHide={handleGroupCloseModal} backdrop="static" keyboard={false} >
-        <Form>
-          <Modal.Header closeButton>
-            <Modal.Title>Create Group</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            {/* Group Name Input */}
-            <Form.Group controlId="groupName">
-              <Form.Label>Group Name</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter group name"
-                value={groupName}
-                onChange={(e) => setGroupName(e.target.value)}
-                required
-              />
-            </Form.Group>
-            <MultiSelectDropdown options={members} value={"_id"} label={"userId"} selectedMembers={setSelectedMembers} optionValue={selectedMembers} />
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleGroupCloseModal}>
-              Cancel
-            </Button>
-            <Button type="submit" variant="primary" onClick={(e) => handleCreateGroup(e)}>
-              Create Group
-            </Button>
-          </Modal.Footer>
-        </Form>
-      </Modal>
-    </div>
+					<a href="#" class="list-group-item list-group-item-action border-0">
+						<div class="badge bg-success float-right">5</div>
+						<div class="d-flex align-items-start">
+							<img src="https://bootdey.com/img/Content/avatar/avatar5.png" class="rounded-circle mr-1" alt="Vanessa Tucker" width="40" height="40" />
+							<div class="flex-grow-1 ml-3">
+								Vanessa Tucker
+								<div class="small"><span class="fas fa-circle chat-online"></span> Online</div>
+							</div>
+						</div>
+					</a>
+					
+					<hr class="d-block d-lg-none mt-1 mb-0" />
+		</div>
   );
 };
-
 export default ChatList;
