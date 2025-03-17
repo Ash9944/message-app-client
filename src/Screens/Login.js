@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from 'react-router-dom';
-import { loginUser } from '../httpRequests'
+import { loginUser, refreshToken } from '../httpRequests'
 import socket from '../socketOperations.js';
 import { AppContext } from "../Common/AppContext.js";
 
@@ -17,8 +17,35 @@ const Login = () => {
     if (userDetails && (userDetails.userId && userDetails.token)) {
       navigate('/home');
     }
+
+    const refreshTokenIntervalInMs = 4 * 60 * 1000;
+    const interval = setInterval(() => {
+      validateSessionTokenForApplicant();
+    }, refreshTokenIntervalInMs);
+
+    return () => clearInterval(interval);
   }, []);
 
+  async function validateSessionTokenForApplicant() {
+    try {
+      const userDetails = localStorage.getItem("userDetails") ? JSON.parse(localStorage.getItem("userDetails")) : {};
+      var sessionToken = userDetails.token;
+      if (!sessionToken) {
+        throw new Error("Refresh Failed");
+      }
+
+      var refreshResponse = await refreshToken();
+      if (!refreshResponse) {
+        throw new Error("Refresh Failed");
+      }
+
+      userDetails.token = refreshResponse.tokenDetails.token;
+      localStorage.setItem("userDetails", JSON.stringify(userDetails));
+    } catch (error) {
+      localStorage.clear();
+      navigate('/');
+    }
+  }
 
   const handleSubmit = async (e) => {
     try {

@@ -12,8 +12,8 @@ const Home = () => {
 
         <div class="card">
           <div class="row g-0">
-            <ChatList></ChatList>
-            <ChatWindow></ChatWindow>
+            <ChatList setActiveChat={setActiveChat}></ChatList>
+            <ChatWindow activeChat={activeChat}></ChatWindow>
           </div>
         </div>
       </div>

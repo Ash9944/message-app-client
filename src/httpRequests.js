@@ -2,9 +2,11 @@ import axios from "axios";
 var backEndUrl = "http://localhost:5000"
 
 async function loginUser(userDetails) {
+    const userToken = localStorage.getItem("userDetails") ? JSON.parse(localStorage.getItem("userDetails")) : {}
     let response = await axios.post(
         `${backEndUrl}/user/login`,
         userDetails,
+        setHeaders(userToken)
     )
 
     if (!response.data) {
@@ -15,9 +17,11 @@ async function loginUser(userDetails) {
 }
 
 async function registerUser(userDetails) {
+    const userToken = localStorage.getItem("userDetails") ? JSON.parse(localStorage.getItem("userDetails")) : {}
     let response = await axios.post(
         `${backEndUrl}/user/register`,
-        userDetails
+        userDetails,
+        setHeaders(userToken)
     )
 
     if (!response.data) {
@@ -27,7 +31,8 @@ async function registerUser(userDetails) {
 }
 
 async function fetchUsers(userId, isFriends) {
-    let response = await axios.get(`${backEndUrl}/user/${userId}/${isFriends}`)
+    const userDetails = localStorage.getItem("userDetails") ? JSON.parse(localStorage.getItem("userDetails")) : {}
+    let response = await axios.get(`${backEndUrl}/user/${userId}/${isFriends}`, setHeaders(userDetails))
 
     if (!response.data) {
         throw new Error("Failed to register");
@@ -36,7 +41,8 @@ async function fetchUsers(userId, isFriends) {
 }
 
 async function fetchMessages(fromId, toId, groupId) {
-    let response = await axios.get(`${backEndUrl}/messages/fetch/${fromId}/${toId}/${groupId}`)
+    const userDetails = localStorage.getItem("userDetails") ? JSON.parse(localStorage.getItem("userDetails")) : {}
+    let response = await axios.get(`${backEndUrl}/messages/fetch/${fromId}/${toId}/${groupId}`, setHeaders(userDetails))
 
     if (!response.data) {
         throw new Error("Failed to register");
@@ -45,7 +51,8 @@ async function fetchMessages(fromId, toId, groupId) {
 }
 
 async function fetchAllMessages(fromId, toId) {
-    let response = await axios.get(`${backEndUrl}/messages/${fromId}`)
+    const userDetails = localStorage.getItem("userDetails") ? JSON.parse(localStorage.getItem("userDetails")) : {}
+    let response = await axios.get(`${backEndUrl}/messages/${fromId}`, setHeaders(userDetails))
 
     if (!response.data) {
         throw new Error("Failed to register");
@@ -54,7 +61,8 @@ async function fetchAllMessages(fromId, toId) {
 }
 
 async function createGroup(groupData) {
-    let response = await axios.post(`${backEndUrl}/group`, groupData);
+    const userDetails = localStorage.getItem("userDetails") ? JSON.parse(localStorage.getItem("userDetails")) : {}
+    let response = await axios.post(`${backEndUrl}/group`, groupData, setHeaders(userDetails));
 
     if (!response.data) {
         throw new Error("Failed to register");
@@ -63,7 +71,8 @@ async function createGroup(groupData) {
 }
 
 async function fetchSingleGroup(groupId) {
-    let response = await axios.get(`${backEndUrl}/group/${groupId}`);
+    const userDetails = localStorage.getItem("userDetails") ? JSON.parse(localStorage.getItem("userDetails")) : {}
+    let response = await axios.get(`${backEndUrl}/group/${groupId}`, setHeaders(userDetails));
 
     if (!response.data) {
         throw new Error("Failed to register");
@@ -72,7 +81,8 @@ async function fetchSingleGroup(groupId) {
 }
 
 async function deleteGroup(groupId) {
-    let response = await axios.delete(`${backEndUrl}/group/${groupId}`);
+    const userDetails = localStorage.getItem("userDetails") ? JSON.parse(localStorage.getItem("userDetails")) : {}
+    let response = await axios.delete(`${backEndUrl}/group/${groupId}`, setHeaders(userDetails));
 
     if (!response.data) {
         throw new Error("Failed to register");
@@ -81,12 +91,35 @@ async function deleteGroup(groupId) {
 }
 
 async function updateGroup(groupId, groupData) {
-    let response = await axios.put(`${backEndUrl}/group/${groupId}`, groupData);
+    const userDetails = localStorage.getItem("userDetails") ? JSON.parse(localStorage.getItem("userDetails")) : {}
+    let response = await axios.put(`${backEndUrl}/group/${groupId}`, groupData, setHeaders(userDetails));
 
     if (!response.data) {
         throw new Error("Failed to register");
     }
     return response.data;
+}
+
+async function refreshToken() {
+    const userDetails = localStorage.getItem("userDetails") ? JSON.parse(localStorage.getItem("userDetails")) : {}
+    let response = await axios.put(`${backEndUrl}/user/refresh/token/${userDetails.userId}`, setHeaders(userDetails));
+
+    if (!response.data) {
+        throw new Error("Failed to register");
+    }
+    return response.data;
+}
+
+function setHeaders(userDetails) {
+    const options = {
+        headers: {
+            'Content-Type': 'application/json',
+            'token': userDetails.token,
+            'userId': userDetails.userId,
+        }
+    };
+
+    return options;
 }
 
 export {
@@ -98,5 +131,6 @@ export {
     createGroup,
     fetchSingleGroup,
     deleteGroup,
-    updateGroup
+    updateGroup,
+    refreshToken
 }
